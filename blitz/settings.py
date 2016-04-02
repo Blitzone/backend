@@ -31,8 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'accounts',
-    # 'accounts.apps.AccountsConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -83,7 +82,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'blitzdb',
 	'USER': 'mikel',
-	'PASSWORD': 'password',
+	'PASSWORD': 'bleez32k',
 	'HOST': 'localhost',
 	'PORT': '',
     }
