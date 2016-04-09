@@ -153,3 +153,6 @@ REST_FRAMEWORK = {
 JWT_AUTH = {
     'JWT_ALLOW_REFRESH' : True,
 }
+
+MEDIA_ROOT = "/home/mikel/workspace/backend/media"
+MEDIA_URL  = "/media/"

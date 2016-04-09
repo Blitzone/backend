@@ -5,10 +5,13 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
+def user_directory_path(instance, filename):
+    return '{0}/{1}'.format(instance.user.username, filename)
+
 # Create your models here.
 class BlitzUser(models.Model):
     user        = models.OneToOneField(User)
-    avatar      = models.ForeignKey('images.Image',default=1, on_delete=models.CASCADE)
+    avatar      = models.ImageField(upload_to=user_directory_path)
     blitzCount  = models.IntegerField(default=0)
     is_banned   = models.BooleanField(default=False)
 
