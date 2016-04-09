@@ -1,14 +1,14 @@
-from django.shortcuts import render
-from django.http import HttpResponse
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED
 
 from .models import BlitzUser
+from .serializers import BlitzUserSerializer
 from rest_framework.views import APIView
-from rest_framework.parsers import JSONParser
+from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework_jwt.settings import api_settings
+from django.core.files.images import ImageFile
 # Create your views here.
 
 import json
@@ -55,5 +55,34 @@ class RegisterView(APIView):
                 "statusCode"    : HTTP_201_CREATED,
                 "token"         : token,
                 "details"       : "ok"
+            }
+        )
+
+class ProfileView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        serializedBlitzUser = BlitzUserSerializer(blitzUser)
+
+        return Response(serializedBlitzUser.data)
+
+class AvatarView(APIView):
+    parser_classes = (MultiPartParser, FormParser, )
+    permission_classes = (permissions.AllowAny, )
+
+    def put(self, request, format=None):
+        file = request.FILES.get('filedata')
+
+        with open("/home/mikel/workspace/backend/media/test/asd.jpg", "wb+") as destination:
+            for chunk in file.chunks():
+                destination.write(chunk)
+
+        return Response(
+            {
+                "statusCode" : HTTP_200_OK
             }
         )
