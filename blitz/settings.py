@@ -154,5 +154,5 @@ JWT_AUTH = {
     'JWT_ALLOW_REFRESH' : True,
 }
 
-MEDIA_ROOT = "/home/mikel/workspace/backend/media"
+MEDIA_ROOT = "/home/mikelv92/blitz/media/"
 MEDIA_URL  = "/media/"

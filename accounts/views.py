@@ -64,7 +64,8 @@ class ProfileView(APIView):
 
     def get(self, request, format=None):
         user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
+	username = user.username
+        blitzUser = BlitzUser.objects.get(user__username=username)
 
         serializedBlitzUser = BlitzUserSerializer(blitzUser)
 
@@ -85,12 +86,6 @@ class AvatarView(APIView):
 
         blitzUser.avatar.save("testing.jpg", image)
         blitzUser.save()
-
-
-        #
-        # with open("/home/mikel/workspace/backend/media/test/asd.jpg", "wb+") as destination:
-        #     for chunk in image.chunks():
-        #         destination.write(chunk)
 
         return Response(
             {
