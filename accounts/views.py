@@ -72,14 +72,25 @@ class ProfileView(APIView):
 
 class AvatarView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
-    permission_classes = (permissions.AllowAny, )
+    permission_classes = (permissions.IsAuthenticated, )
 
     def put(self, request, format=None):
         file = request.FILES.get('filedata')
+        image = ImageFile(file)
 
-        with open("/home/mikel/workspace/backend/media/test/asd.jpg", "wb+") as destination:
-            for chunk in file.chunks():
-                destination.write(chunk)
+        #CHeck if file is an image
+
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        blitzUser.avatar.save("testing.jpg", image)
+        blitzUser.save()
+
+
+        #
+        # with open("/home/mikel/workspace/backend/media/test/asd.jpg", "wb+") as destination:
+        #     for chunk in image.chunks():
+        #         destination.write(chunk)
 
         return Response(
             {
