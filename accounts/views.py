@@ -75,7 +75,8 @@ class AvatarView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
     permission_classes = (permissions.IsAuthenticated, )
 
-    def put(self, request, format=None):
+    def post(self, request, format=None):
+	print request.FILES	
         file = request.FILES.get('filedata')
         image = ImageFile(file)
 
@@ -84,7 +85,7 @@ class AvatarView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        blitzUser.avatar.save("testing.jpg", image)
+        blitzUser.avatar.save("testing.png", image)
         blitzUser.save()
 
         return Response(
