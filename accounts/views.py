@@ -84,7 +84,7 @@ class AvatarView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        blitzUser.avatar.save("testing.png", image)
+        blitzUser.avatar.save("amganagato.png", image)
         blitzUser.save()
 
         return Response(
