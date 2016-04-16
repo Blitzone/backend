@@ -55,6 +55,7 @@ class UserChapterView(APIView):
 
 class TopicView(APIView):
     parser_classes = (JSONParser, )
+    permission_classes = (permissions.AllowAny, )
 
     def get(self, request, format=None):
         print timezone.now()
@@ -69,8 +70,9 @@ class TopicView(APIView):
 
 class ChaptersView(APIView):
     parser_classes = (JSONParser, )
+    permission_classes = (permissions.AllowAny, )
 
-    def post(self, request, format=None):
+    def get(self, request, format=None):
         json_data   = json.loads(request.body)
         topicId  = json_data["topic"]
         topic = Topic.objects.get(pk=topicId)
