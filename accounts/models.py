@@ -14,6 +14,7 @@ class BlitzUser(models.Model):
     avatar      = models.ImageField(upload_to=user_directory_path)
     blitzCount  = models.IntegerField(default=0)
     is_banned   = models.BooleanField(default=False)
+    follows     = models.ManyToManyField('BlitzUser', related_name='followed_by')
 
     def natural_key(self):
         return self.user.natural_key()
@@ -23,7 +24,6 @@ class BlitzUser(models.Model):
 
 
 class Notification(models.Model):
-    id          = models.BigIntegerField(default=0, primary_key=True)
     text        = models.CharField(max_length=128)
     link        = models.CharField(max_length=256)
     user        = models.ForeignKey(BlitzUser, on_delete=models.CASCADE)

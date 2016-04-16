@@ -54,7 +54,6 @@ class RegisterView(APIView):
             {
                 "statusCode"    : HTTP_201_CREATED,
                 "token"         : token,
-                "details"       : "ok"
             }
         )
 
@@ -75,7 +74,7 @@ class AvatarView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
-	print request.FILES	
+        print request.FILES
         file = request.FILES.get('filedata')
         image = ImageFile(file)
 
