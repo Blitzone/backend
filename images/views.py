@@ -33,7 +33,7 @@ class UserChapterView(APIView):
 
         #Find topic and userTopic to add the new chapter to.
 
-        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())[0]
+        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
@@ -55,7 +55,7 @@ class TopicView(APIView):
     parser_classes = (JSONParser, )
 
     def get(self, request, format=None):
-        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())[0]
+        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
 
         serializedTopic = TopicSerializer(topic)
 

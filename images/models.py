@@ -4,14 +4,14 @@ from django.db import models
 from accounts.models import BlitzUser
 
 from django.contrib.postgres.fields import ArrayField
-
+import datetime
 
 # Create your models here.
 
 class Topic(models.Model):
     name        = models.CharField(max_length=64)
-    startDate   = models.DateTimeField()
-    endDate     = models.DateTimeField()
+    startDate   = models.DateTimeField(default=django.utils.timezone.now)
+    endDate     = models.DateTimeField(default=django.utilz.timezone.now+datetime.timedelta(days=365))
 
     def __str__(self):
         return self.name
@@ -50,8 +50,6 @@ class Blitz(models.Model):
     user2               = models.ForeignKey(BlitzUser, related_name='blitzUser2', on_delete=models.CASCADE)
     winner              = models.ForeignKey(BlitzUser, related_name='wins', on_delete=models.CASCADE)
     userTopic           = models.ForeignKey(UserTopic, on_delete=models.CASCADE)
-    startDate           = models.DateTimeField()
-    endDate             = models.DateTimeField()
 
     def __str__(self):
         return self.user1 + ", " + self.user2
