@@ -10,6 +10,7 @@ import json, datetime
 from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import TopicSerializer, ChapterSerializer
+from django.utils import timezone
 
 class UserChapterView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
@@ -33,7 +34,8 @@ class UserChapterView(APIView):
 
         #Find topic and userTopic to add the new chapter to.
 
-        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
+        #topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
+        topic = Topic.objects.get(pk=0)
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
@@ -55,7 +57,11 @@ class TopicView(APIView):
     parser_classes = (JSONParser, )
 
     def get(self, request, format=None):
-        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
+        print timezone.now()
+        topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
+        print topic
+        #topic = Topic.objects.get(pk=1)
+
 
         serializedTopic = TopicSerializer(topic)
 
@@ -64,7 +70,7 @@ class TopicView(APIView):
 class ChaptersView(APIView):
     parser_classes = (JSONParser, )
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         json_data   = json.loads(request.body)
         topicId  = json_data["topic"]
         topic = Topic.objects.get(pk=topicId)
