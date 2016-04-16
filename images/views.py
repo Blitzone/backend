@@ -11,7 +11,7 @@ from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import TopicSerializer, ChapterSerializer
 
-class ChapterView(APIView):
+class UserChapterView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
     permission_classes = (permissions.IsAuthenticated, )
 
