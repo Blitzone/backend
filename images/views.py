@@ -22,11 +22,14 @@ class UserChapterView(APIView):
         blitzUser   = BlitzUser.objects.get(user=user)
 
         #Get the chapter
-        json_data   = json.loads(request.body)
-        chapterId  = json_data["chapter"]
+#        json_data   = json.loads(request.body)
+#        chapterId  = json_data["chapter"]
+	print request.POST
+	chapterId = request.POST.get('chapter')
 
         #Get the file
-        file = request.Files.get('filedata')
+        #file = request.Files.get('filedata')
+	file = request.POST.get('filedata')
         image = ImageFile(file)
 
 
@@ -34,7 +37,8 @@ class UserChapterView(APIView):
 
         #Find topic and userTopic to add the new chapter to.
 
-        topic = Topic.objects.filter(endDate__lte=datetime.datetime.now(), startDate__gte=datetime.datetime.now())
+        topic = Topic.objects.get(endDate__gte=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+	print topic
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
@@ -43,8 +47,13 @@ class UserChapterView(APIView):
 
         chapter = Chapter.objects.get(id=chapterId)
 
-        userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
-        userChapter.save()
+	try:
+		userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
+		userChapter.image = image
+		userChapter.save()
+	except UserChapter.DoesNotExist:
+        	userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
+        	userChapter.save()
 
         return Response(
             {
