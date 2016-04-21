@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
 
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
@@ -9,7 +9,7 @@ from django.core.files.images import ImageFile
 import json, datetime
 from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
-from .serializers import TopicSerializer, ChapterSerializer
+from .serializers import TopicSerializer, ChapterSerializer, UserChapterSerializer
 from django.utils import timezone
 
 class UserChapterView(APIView):
@@ -22,14 +22,11 @@ class UserChapterView(APIView):
         blitzUser   = BlitzUser.objects.get(user=user)
 
         #Get the chapter
-#        json_data   = json.loads(request.body)
-#        chapterId  = json_data["chapter"]
-	print request.POST
-	chapterId = request.POST.get('chapter')
+        json_data  = json.loads(request.POST.get('params'))
+        chapterId  = json_data["chapter"]
 
         #Get the file
-        #file = request.Files.get('filedata')
-	file = request.POST.get('filedata')
+        file = request.POST.get('filedata')
         image = ImageFile(file)
 
 
@@ -38,28 +35,53 @@ class UserChapterView(APIView):
         #Find topic and userTopic to add the new chapter to.
 
         topic = Topic.objects.get(endDate__gte=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
-	print topic
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
             userTopic = UserTopic(user=blitzUser, topic=topic)
             userTopic.save()
 
-        chapter = Chapter.objects.get(id=chapterId)
+        chapter = Chapter.objects.get(pk=chapterId)
 
-	try:
-		userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
-		userChapter.image = image
-		userChapter.save()
-	except UserChapter.DoesNotExist:
-        	userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
-        	userChapter.save()
+        try:
+            userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
+            userChapter.image = image
+            userChapter.save()
+        except UserChapter.DoesNotExist:
+            userChapter = userChapter(image=image, userTopic=userTopic, chapter=chapter)
+            userChapter.save()
 
         return Response(
             {
                 "statusCode" : HTTP_201_CREATED
             }
         )
+
+    def get(self, request, format=None):
+        user        = request.user
+        blitzUser   = BlitzUser.objects.get(user=user)
+
+
+        # Get the chapter
+        json_data   = json.loads(request.body)
+        chapterId   = json_data["chapter"]
+        topicId     = json_data["topic"]
+
+        topic = Topic.objects.get(pk=topicId)
+        userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
+        chapter = Chapter.objects.get(pk=chapterId)
+        try:
+            userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
+            serializedUserChapter = UserChapterSerializer(userChapter)
+            return Response(serializedUserChapter.data)
+        except UserChapter.DoesNotExist:
+            return Response (
+                {
+                    "statusCode" : HTTP_404_NOT_FOUND
+                }
+            )
+
+
 
 class TopicView(APIView):
     parser_classes = (JSONParser, )
