@@ -39,8 +39,8 @@ class UserTopic(models.Model):
 
 def user_directory_path(instance, filename):
     username                = instance.userTopic.user.user.username
-    topicId                 = instance.userTopic.id
-    chapterId               = instance.id
+    topicId                 = instance.userTopic.topic.id
+    chapterId               = instance.chapter.id
     return '{0}/topic/{1}/chapter/{2}/{3}'.format(username, topicId, chapterId, filename)
 
 
