@@ -1,4 +1,4 @@
-#!/home/mikelv92/blitz/djangoEnv/bin/python
+#!/home/ubuntu/blitz/djangoEnv/bin/python
 """PILdriver, an image-processing calculator using PIL.
 
 An instance of class PILDriver is essentially a software stack machine

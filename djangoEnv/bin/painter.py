@@ -1,4 +1,4 @@
-#!/home/mikelv92/blitz/djangoEnv/bin/python
+#!/home/ubuntu/blitz/djangoEnv/bin/python
 #
 # The Python Imaging Library
 # $Id$

@@ -82,22 +82,12 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'blitzdb',
-	'USER': 'mikel',
+	'USER': 'mikelv92',
 	'PASSWORD': 'bleez32k',
 	'HOST': 'localhost',
 	'PORT': '',
     }
 }
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'HOST': '/cloudsql/still-lamp-126721:blitz-db-instance',
-#         'NAME': 'blitzdb',
-#         'USER': 'mikel',
-#         'PASSWORD': 'bleetzkreeg32',
-#     }
-# }
-
 
 
 # Password validation

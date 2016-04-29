@@ -1,4 +1,4 @@
-#!/home/mikelv92/blitz/djangoEnv/bin/python
+#!/home/ubuntu/blitz/djangoEnv/bin/python
 from django.core import management
 
 if __name__ == "__main__":

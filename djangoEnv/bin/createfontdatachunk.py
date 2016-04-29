@@ -1,4 +1,4 @@
-#!/home/mikelv92/blitz/djangoEnv/bin/python
+#!/home/ubuntu/blitz/djangoEnv/bin/python
 from __future__ import print_function
 import base64
 import os
