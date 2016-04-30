@@ -97,7 +97,7 @@ class ChaptersView(APIView):
     parser_classes = (JSONParser, )
     permission_classes = (permissions.AllowAny, )
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
         json_data   = json.loads(request.body)
         topicId  = json_data["topic"]
         topic = Topic.objects.get(pk=topicId)
@@ -105,4 +105,8 @@ class ChaptersView(APIView):
 
         serializedChapters = ChapterSerializer(chapters, many=True)
 
-        return Response(serializedChapters.data)
+        return Response(
+		{
+			"chapters" : serializedChapters.data
+		}
+	)
