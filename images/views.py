@@ -48,7 +48,7 @@ class UserChapterView(APIView):
             userChapter.image = image
             userChapter.save()
         except UserChapter.DoesNotExist:
-            userChapter = userChapter(image=image, userTopic=userTopic, chapter=chapter)
+            userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
             userChapter.save()
 
         return Response(
