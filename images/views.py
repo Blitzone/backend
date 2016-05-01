@@ -12,7 +12,7 @@ from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import TopicSerializer, ChapterSerializer, UserChapterSerializer
 from django.utils import timezone
 
-class UserChapterView(APIView):
+class UploadUserChapterView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
     permission_classes = (permissions.IsAuthenticated, )
 
@@ -57,30 +57,59 @@ class UserChapterView(APIView):
             }
         )
 
-    def get(self, request, format=None):
-        user        = request.user
-        blitzUser   = BlitzUser.objects.get(user=user)
+    # def get(self, request, format=None):
+    #     user        = request.user
+    #     blitzUser   = BlitzUser.objects.get(user=user)
+    #
+    #
+    #     # Get the chapter
+    #     json_data   = json.loads(request.body)
+    #     chapterId   = json_data["chapter"]
+    #     topicId     = json_data["topic"]
+    #
+    #     topic = Topic.objects.get(pk=topicId)
+    #     userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
+    #     chapter = Chapter.objects.get(pk=chapterId)
+    #     try:
+    #         userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
+    #         serializedUserChapter = UserChapterSerializer(userChapter)
+    #         return Response(serializedUserChapter.data)
+    #     except UserChapter.DoesNotExist:
+    #         return Response (
+    #             {
+    #                 "statusCode" : HTTP_404_NOT_FOUND
+    #             }
+    #         )
+    #
 
+class GetUserChaptersView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
 
         # Get the chapter
-        json_data   = json.loads(request.body)
-        chapterId   = json_data["chapter"]
-        topicId     = json_data["topic"]
+        json_data = json.loads(request.body)
+        topicId = json_data["topic"]
 
         topic = Topic.objects.get(pk=topicId)
         userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
-        chapter = Chapter.objects.get(pk=chapterId)
         try:
-            userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
-            serializedUserChapter = UserChapterSerializer(userChapter)
-            return Response(serializedUserChapter.data)
-        except UserChapter.DoesNotExist:
-            return Response (
+            userChapters = UserChapter.objects.filter(userTopic=userTopic)
+            serializedUserChapters = UserChapterSerializer(userChapters, many=True)
+            return Response(
                 {
-                    "statusCode" : HTTP_404_NOT_FOUND
+                    "userChapters" : serializedUserChapters.data
                 }
             )
-
+        except UserChapter.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
 
 
 class TopicView(APIView):
