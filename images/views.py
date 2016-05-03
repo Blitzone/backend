@@ -53,7 +53,8 @@ class UploadUserChapterView(APIView):
 
         return Response(
             {
-                "statusCode" : HTTP_201_CREATED
+                "statusCode" : HTTP_201_CREATED,
+		"imageUrl"   : userChapter.image.url
             }
         )
 
