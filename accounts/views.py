@@ -110,10 +110,17 @@ class ChangeUsernameView(APIView):
         else:
             user.username = newUsername
             user.save()
+
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+
             return Response(
                 {
                     "statusCode"    : HTTP_200_OK,
-                    "details"       : "Everything ok."
+                    "token"         : token
                 }
             )
 
@@ -132,10 +139,17 @@ class ChangePasswordView(APIView):
         if user is not None:
             user.set_password(newPassword)
             user.save()
+
+            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
+            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
+
+            payload = jwt_payload_handler(user)
+            token = jwt_encode_handler(payload)
+
             return Response(
                 {
                     "statusCode"    : HTTP_200_OK,
-                    "details"       : "Everything ok."
+                    "token"         : token
                 }
             )
         else:
