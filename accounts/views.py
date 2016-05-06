@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST
 
 from .models import BlitzUser
 from .serializers import BlitzUserSerializer
@@ -9,6 +9,7 @@ from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework_jwt.settings import api_settings
 from django.core.files.images import ImageFile
+from django.contrib.auth import authenticate
 # Create your views here.
 
 import json
@@ -111,6 +112,36 @@ class ChangeUsernameView(APIView):
             user.save()
             return Response(
                 {
-                    "statusCode"    : HTTP_200_OK
+                    "statusCode"    : HTTP_200_OK,
+                    "details"       : "Everything ok."
+                }
+            )
+
+class ChangePasswordView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        json_data = json.loads(request.body)
+        oldPassword = json_data["oldPassword"]
+        newPassword = json_data["newPassword"]
+
+        username = request.user.username
+
+        user = authenticate(username=username, password=oldPassword)
+
+        if user is not None:
+            user.set_password(newPassword)
+            user.save()
+            return Response(
+                {
+                    "statusCode"    : HTTP_200_OK,
+                    "details"       : "Everything ok."
+                }
+            )
+        else:
+            return Response(
+                {
+                    "statusCode"    : HTTP_400_BAD_REQUEST,
+                    "details"       : "Wrong password."
                 }
             )
