@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT
 
 from .models import BlitzUser
 from .serializers import BlitzUserSerializer
@@ -74,7 +74,6 @@ class AvatarView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
-        print request.FILES
         file = request.FILES.get('filedata')
         image = ImageFile(file)
 
@@ -91,3 +90,27 @@ class AvatarView(APIView):
                 "statusCode" : HTTP_200_OK
             }
         )
+
+class ChangeUsernameView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        user = request.user
+        json_data = json.loads(request.body)
+        newUsername = json_data["newUsername"]
+
+        if User.objects.filter(username=newUsername).exists():
+            return Response(
+                {
+                    "statusCode"    : HTTP_409_CONFLICT,
+                    "details"       : "Username already exists."
+                }
+            )
+        else:
+            user.username = newUsername
+            user.save()
+            return Response(
+                {
+                    "statusCode"    : HTTP_200_OK
+                }
+            )
