@@ -96,8 +96,8 @@ class GetUserChaptersView(APIView):
         topicId = json_data["topic"]
 
         topic = Topic.objects.get(pk=topicId)
-        userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         try:
+            userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
             userChapters = UserChapter.objects.filter(userTopic=userTopic)
             serializedUserChapters = UserChapterSerializer(userChapters, many=True)
             return Response(
@@ -106,6 +106,12 @@ class GetUserChaptersView(APIView):
                 }
             )
         except UserChapter.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+        except UserTopic.DoesNotExist:
             return Response(
                 {
                     "statusCode": HTTP_404_NOT_FOUND
