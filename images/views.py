@@ -34,7 +34,7 @@ class UploadUserChapterView(APIView):
 
         #Find topic and userTopic to add the new chapter to.
 
-        topic = Topic.objects.get(endDate__gte=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
