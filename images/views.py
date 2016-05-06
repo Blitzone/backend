@@ -54,7 +54,7 @@ class UploadUserChapterView(APIView):
         return Response(
             {
                 "statusCode" : HTTP_201_CREATED,
-		"imageUrl"   : userChapter.image.url
+		        "imageUrl"   : userChapter.image.url
             }
         )
 
@@ -121,7 +121,15 @@ class TopicView(APIView):
         topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
         serializedTopic = TopicSerializer(topic)
 
-        return Response(serializedTopic.data)
+        chapters = Chapter.objects.filter(topic=topic)
+        serializedChapters = ChapterSerializer(chapters, many=True)
+
+        return Response(
+            {
+                "topic"     : serializedTopic.data,
+                "chapters"  : serializedChapters.data
+            }
+        )
 
 class ChaptersView(APIView):
     parser_classes = (JSONParser, )
