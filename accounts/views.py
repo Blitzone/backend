@@ -159,3 +159,20 @@ class ChangePasswordView(APIView):
                     "details"       : "Wrong password."
                 }
             )
+
+class SearchUserView(APIView):
+    permission_classes = (permissions.AllowAny, )
+
+    def post(self, request, format=None):
+        json_data   = json.loads(request.body)
+        query       = json_data["query"]
+
+        userlist    = BlitzUser.objects.filter(user_username__icontains=query)
+
+        serializedUserList = BlitzUserSerializer(userlist, many=True)
+
+        return Response(
+            {
+                "userList" : serializedUserList.data
+            }
+        )
