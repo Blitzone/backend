@@ -167,7 +167,7 @@ class SearchUserView(APIView):
         json_data   = json.loads(request.body)
         query       = json_data["query"]
 
-        userlist    = BlitzUser.objects.filter(user_username__icontains=query)
+        userlist    = BlitzUser.objects.filter(user__username__icontains=query)
 
         serializedUserList = BlitzUserSerializer(userlist, many=True)
 
