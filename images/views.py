@@ -154,3 +154,24 @@ class ChaptersView(APIView):
 			"chapters" : serializedChapters.data
 		}
 	)
+
+class SearchPhotoChapterView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        json_data = json.loads(request.body)
+        topicId = json_data["topic"]
+        chapterId = json_data["chapter"]
+
+        topic = Topic.objects.get(pk=topicId)
+        chapter = Chapter.objects.get(pk=chapterId)
+        userChapters = UserChapter.objects.filter(chapter=chapter, userTopic__topic=topic)
+
+        serializedUserChapters = UserChapterSerializer(userChapters, many=True)
+
+        return Response(
+            {
+                "searchPhotoChapters" : serializedUserChapters.data
+            }
+        )
