@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import Topic, Chapter, Blitz, UserTopic, UserChapter
+from accounts.serializers import BlitzUser
 
 class UserTopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -12,9 +13,14 @@ class TopicSerializer(serializers.ModelSerializer):
         fields = ('id', 'name', 'startDate', 'endDate')
 
 class UserChapterSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('getUser')
+
+    def getUser(self, userChapter):
+        return BlitzUser.objects.get(user=userChapter.userTopic.user)
+
     class Meta:
         model = UserChapter
-        fields = ('id', 'image', 'userTopic', 'chapter')
+        fields = ('id', 'image', 'userTopic', 'chapter', 'user')
 
 class ChapterSerializer(serializers.ModelSerializer):
     class Meta:
