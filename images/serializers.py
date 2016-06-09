@@ -16,7 +16,7 @@ class UserChapterSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('getUser')
 
     def getUser(self, userChapter):
-        return BlitzUser.objects.get(user=userChapter.userTopic.user)
+        return serializers.serialize(userChapter.userTopic.user)
 
     class Meta:
         model = UserChapter

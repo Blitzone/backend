@@ -10,4 +10,6 @@ urlpatterns = [
 	url(r'^changeUsername/$', ChangeUsernameView.as_view(), name='changeUsername'),
 	url(r'^changePassword/$', ChangePasswordView.as_view(), name='changePassword'),
 	url(r'^searchUser/$', SearchUserView.as_view(), name='searchUser'),
+	url(r'^addFollow/$', AddFollowView.as_view(), name='addFollow'),
+	url(r'^delFollow/$', DelFollowView.as_view(), name='delFollow'),
 ]

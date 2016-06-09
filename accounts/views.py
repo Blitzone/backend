@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST
+from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 from .models import BlitzUser
 from .serializers import BlitzUserSerializer
@@ -174,5 +174,55 @@ class SearchUserView(APIView):
         return Response(
             {
                 "userList" : serializedUserList.data
+            }
+        )
+
+class AddFollowView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        json_data       = json.loads(request.body)
+        followedUser    = json_data["followedUser"]
+
+        user            = request.user
+        blitzUser       = BlitzUser.objects.get(user=user)
+
+        try:
+            blitzUser.follows.add(BlitzUser.objects.get(user__username=followedUser))
+        except BlitzUser.DoesNotExist:
+            return Response(
+                {
+                    "statusCode" : HTTP_404_NOT_FOUND
+                }
+            )
+
+        return Response(
+            {
+                "statusCode" : HTTP_200_OK
+            }
+        )
+
+class DelFollowView(APIView):
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        json_data = json.loads(request.body)
+        followedUser = json_data["followedUser"]
+
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        try:
+            blitzUser.follows.remove(BlitzUser.objects.get(user__username=followedUser))
+        except BlitzUser.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+
+        return Response(
+            {
+                "statusCode": HTTP_200_OK
             }
         )
