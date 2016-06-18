@@ -161,13 +161,14 @@ class SearchPhotoChapterView(APIView):
 
     def post(self, request, format=None):
         user = request.user
+	blitzUser = BlitzUser.objects.get(user=user)
         json_data = json.loads(request.body)
         topicId = json_data["topic"]
         chapterId = json_data["chapter"]
 
         topic = Topic.objects.get(pk=topicId)
         chapter = Chapter.objects.get(pk=chapterId)
-        userChapters = UserChapter.objects.filter(chapter=chapter, userTopic__topic=topic)
+        userChapters = UserChapter.objects.filter(chapter=chapter, userTopic__topic=topic).exclude(userTopic__user=blitzUser)
 
         serializedUserChapters = SearchUserChapterSerializer(userChapters, many=True, requestingUser=user.username)
 
