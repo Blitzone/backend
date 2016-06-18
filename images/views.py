@@ -169,7 +169,7 @@ class SearchPhotoChapterView(APIView):
         chapter = Chapter.objects.get(pk=chapterId)
         userChapters = UserChapter.objects.filter(chapter=chapter, userTopic__topic=topic)
 
-        serializedUserChapters = SearchUserChapterSerializer(userChapters, many=True, requestingUser=user.sername)
+        serializedUserChapters = SearchUserChapterSerializer(userChapters, many=True, requestingUser=user.username)
 
         return Response(
             {
