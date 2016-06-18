@@ -15,12 +15,11 @@ class SearchBlitzUserSerializer(serializers.ModelSerializer):
         super(SearchBlitzUserSerializer, self).__init__(*args, **kwargs)
 
     user = serializers.CharField(source='user.username')
-    isFollowed = serializers.SerializerMethodField('isFollowed')
+    isFollowed = serializers.SerializerMethodField('getIsFollowed')
 
-    def isFollowed(self, user):
+    def getIsFollowed(self, user):
         requestingBlitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
         return user in requestingBlitzUser.follows.all()
-
     class Meta:
         model = BlitzUser
         fields = ('user', 'isFollowed')
