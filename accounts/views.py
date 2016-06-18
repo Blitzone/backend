@@ -1,7 +1,7 @@
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 from .models import BlitzUser
-from .serializers import BlitzUserSerializer
+from .serializers import BlitzUserSerializer, SearchBlitzUserSerializer
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -168,30 +168,13 @@ class SearchUserView(APIView):
         query       = json_data["query"]
 
         user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
-
         userlist    = BlitzUser.objects.filter(user__username__icontains=query).exclude(user=user)
 
-        serializedUserList = BlitzUserSerializer(userlist, many=True)
-
-        jsonUsers = json.loads(serializedUserList)
-
-        for entry in jsonUsers:
-            print entry
-            searchedUsername = entry["user"]
-            _alreadyFollowed = False
-            for u in blitzUser.follows.all():
-                if searchedUsername == u.user.username:
-                    _alreadyFollowed = True
-
-            if _alreadyFollowed:
-                entry["followed"] = True
-            else:
-                entry["followed"] = False
+        serializedUserList = SearchBlitzUserSerializer(userlist, many=True, requestingUser=user.username)
 
         return Response(
             {
-                "userList" : jsonUsers
+                "userList" : serializedUserList.data
             }
         )
 
