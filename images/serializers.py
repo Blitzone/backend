@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import Topic, Chapter, Blitz, UserTopic, UserChapter
 from accounts.serializers import BlitzUserSerializer
+from accounts.models import BlitzUser
 
 class UserTopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -21,6 +22,26 @@ class UserChapterSerializer(serializers.ModelSerializer):
     class Meta:
         model = UserChapter
         fields = ('id', 'image', 'userTopic', 'chapter', 'user')
+
+class SearchUserChapterSerializer(serializers.ModelSerializer):
+    user = serializers.SerializerMethodField('getUser')
+    is_followed = serializers.SerializerMethodField('isFollowed')
+
+    def __init__(self, *args, **kwargs):
+        self.requestingUser = kwargs.pop('requestingUser', None)
+        super(SearchUserChapterSerializer, self).__init__(*args, **kwargs)
+
+    def getUser(self, userChapter):
+        return BlitzUserSerializer(userChapter.userTopic.user).data
+
+    def isFollowed(self, userChapter):
+        requestingBlitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
+        return userChapter.userTopic.user in requestingBlitzUser.follows.all()
+
+    class Meta:
+        model = UserChapter
+        fields = ('id', 'image', 'userTopic', 'chapter', 'user', 'is_followed')
+
 
 class ChapterSerializer(serializers.ModelSerializer):
     class Meta:

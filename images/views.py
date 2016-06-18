@@ -9,7 +9,7 @@ from django.core.files.images import ImageFile
 import json, datetime
 from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
-from .serializers import TopicSerializer, ChapterSerializer, UserChapterSerializer
+from .serializers import TopicSerializer, ChapterSerializer, UserChapterSerializer, SearchUserChapterSerializer
 from django.utils import timezone
 
 class UploadUserChapterView(APIView):
@@ -160,6 +160,7 @@ class SearchPhotoChapterView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
+        user = request.user
         json_data = json.loads(request.body)
         topicId = json_data["topic"]
         chapterId = json_data["chapter"]
@@ -168,7 +169,7 @@ class SearchPhotoChapterView(APIView):
         chapter = Chapter.objects.get(pk=chapterId)
         userChapters = UserChapter.objects.filter(chapter=chapter, userTopic__topic=topic)
 
-        serializedUserChapters = UserChapterSerializer(userChapters, many=True)
+        serializedUserChapters = SearchUserChapterSerializer(userChapters, many=True, requestingUser=user.sername)
 
         return Response(
             {
