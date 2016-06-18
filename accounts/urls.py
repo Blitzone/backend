@@ -12,4 +12,7 @@ urlpatterns = [
 	url(r'^searchUser/$', SearchUserView.as_view(), name='searchUser'),
 	url(r'^addFollow/$', AddFollowView.as_view(), name='addFollow'),
 	url(r'^delFollow/$', DelFollowView.as_view(), name='delFollow'),
+	url(r'^getFollowing/$', GetFollowingView.as_view(), name='getFollowing'),
+	url(r'^getFollowers/$', GetFollowersView.as_view(), name='getFollowers'),
+
 ]

@@ -227,3 +227,35 @@ class DelFollowView(APIView):
                 "statusCode": HTTP_200_OK
             }
         )
+
+class GetFollowingView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        following = blitzUser.follows.all()
+        serializedFollowing = BlitzUserSerializer(following, many=True)
+
+        return Response(
+            {
+                "following" : serializedFollowing.data
+            }
+        )
+
+class GetFollowersView(APIView):
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def get(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        followers = BlitzUser.objects.filter(follows=blitzUser)
+        serializedFollowers = BlitzUserSerializer(followers, many=True)
+
+        return Response(
+            {
+                "followers" : serializedFollowers.data
+            }
+        )
