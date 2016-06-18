@@ -167,13 +167,31 @@ class SearchUserView(APIView):
         json_data   = json.loads(request.body)
         query       = json_data["query"]
 
-        userlist    = BlitzUser.objects.filter(user__username__icontains=query)
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        userlist    = BlitzUser.objects.filter(user__username__icontains=query).exclude(user=user)
 
         serializedUserList = BlitzUserSerializer(userlist, many=True)
 
+        jsonUsers = json.loads(serializedUserList)
+
+        for entry in jsonUsers:
+            print entry
+            searchedUsername = entry["user"]
+            _alreadyFollowed = False
+            for u in blitzUser.follows.all():
+                if searchedUsername == u.user.username:
+                    _alreadyFollowed = True
+
+            if _alreadyFollowed:
+                entry["followed"] = True
+            else:
+                entry["followed"] = False
+
         return Response(
             {
-                "userList" : serializedUserList.data
+                "userList" : jsonUsers
             }
         )
 
