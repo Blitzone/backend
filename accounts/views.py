@@ -1,7 +1,7 @@
 from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_409_CONFLICT, HTTP_400_BAD_REQUEST, HTTP_404_NOT_FOUND
 
 from .models import BlitzUser
-from .serializers import BlitzUserSerializer, SearchBlitzUserSerializer
+from .serializers import BlitzUserSerializer, SearchBlitzUserSerializer, ProfileBlitzUserSerializer
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -66,7 +66,7 @@ class ProfileView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        serializedBlitzUser = BlitzUserSerializer(blitzUser)
+        serializedBlitzUser = ProfileBlitzUserSerializer(blitzUser)
 
         return Response(serializedBlitzUser.data)
 
