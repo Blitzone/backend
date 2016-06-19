@@ -7,7 +7,7 @@ class BlitzUserSerializer(serializers.ModelSerializer):
     followers = serializers.SerializerMethodField('getNumFollowers')
 
     def getNumFollowers(self, user):
-        return BlitzUser.objects.filter(follows=user).len()
+        return len(BlitzUser.objects.filter(follows=user))
     class Meta:
         model = BlitzUser
         fields = ('user', 'avatar', 'blitzCount', 'followers', 'is_banned')
