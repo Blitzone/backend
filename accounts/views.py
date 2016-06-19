@@ -66,7 +66,7 @@ class ProfileView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        serializedBlitzUser = ProfileBlitzUserSerializer(blitzUser)
+        serializedBlitzUser = BlitzUserSerializer(blitzUser)
 
         return Response(serializedBlitzUser.data)
 

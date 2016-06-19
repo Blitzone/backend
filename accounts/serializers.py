@@ -4,9 +4,13 @@ from .models import BlitzUser
 class BlitzUserSerializer(serializers.ModelSerializer):
     user   = serializers.CharField(source='user.username')
     avatar = serializers.ImageField(max_length=None)
+    followers = serializers.SerializerMethodField('getNumFollowers')
+
+    def getNumFollowers(self, user):
+        return BlitzUser.objects.filter(follows=user).len()
     class Meta:
         model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned')
+        fields = ('user', 'avatar', 'blitzCount', 'followers', 'is_banned')
 
 class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
@@ -25,16 +29,16 @@ class SearchBlitzUserSerializer(serializers.ModelSerializer):
         model = BlitzUser
         fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'is_followed')
 
-class ProfileBlitzUserSerializer(serializers.ModelSerializer):
-    user   = serializers.CharField(source='user.username')
-    avatar = serializers.ImageField(max_length=None)
-    followers = serializers.SerializerMethodField('getFollowers')
-    following = serializers.SerializerMethodField('getFollowing')
-
-    def getFollowing(self, user):
-        return BlitzUserSerializer(user.follows.all(), many=True).data
-    def getFollowers(self, user):
-        return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
-    class Meta:
-        model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following')
+# class ProfileBlitzUserSerializer(serializers.ModelSerializer):
+#     user   = serializers.CharField(source='user.username')
+#     avatar = serializers.ImageField(max_length=None)
+#     followers = serializers.SerializerMethodField('getFollowers')
+#     following = serializers.SerializerMethodField('getFollowing')
+#
+#     def getFollowing(self, user):
+#         return BlitzUserSerializer(user.follows.all(), many=True).data
+#     def getFollowers(self, user):
+#         return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
+#     class Meta:
+#         model = BlitzUser
+#         fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following')
