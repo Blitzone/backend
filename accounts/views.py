@@ -10,6 +10,8 @@ from rest_framework import permissions
 from rest_framework_jwt.settings import api_settings
 from django.core.files.images import ImageFile
 from django.contrib.auth import authenticate
+
+from const import *
 # Create your views here.
 
 import json
@@ -231,12 +233,15 @@ class DelFollowView(APIView):
 class GetFollowingView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
+        json_data = json.loads(request.body)
+        client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
+
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        following = blitzUser.follows.all()
-        serializedFollowing = BlitzUserSerializer(following, many=True)
+        following = blitzUser.follows.all().exclude(pk__in=client_pks)
+        serializedFollowing = BlitzUserSerializer(following[0 : const.NUM_FOLLOWING_USERS], many=True)
 
         return Response(
             {
@@ -247,12 +252,15 @@ class GetFollowingView(APIView):
 class GetFollowersView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
-    def get(self, request, format=None):
+    def post(self, request, format=None):
+        json_data = json.loads(request.body)
+        client_pks = json_data["client_pks"] # Get pk of users that are already in the client
+
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        followers = BlitzUser.objects.filter(follows=blitzUser)
-        serializedFollowers = BlitzUserSerializer(followers, many=True)
+        followers = BlitzUser.objects.filter(follows=blitzUser).exclude(pk__in=client_pks).order_by('blitzCount')
+        serializedFollowers = BlitzUserSerializer(followers[0 : const.NUM_FOLLOWERS_USERS], many=True) #serialize only 30
 
         return Response(
             {
