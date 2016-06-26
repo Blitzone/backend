@@ -10,7 +10,7 @@ class BlitzUserSerializer(serializers.ModelSerializer):
         return len(BlitzUser.objects.filter(follows=user))
     class Meta:
         model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'followers', 'is_banned')
+        fields = ('pk', 'user', 'avatar', 'blitzCount', 'followers', 'is_banned')
 
 class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
@@ -27,7 +27,7 @@ class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'is_followed')
+        fields = ('pk', 'user', 'avatar', 'blitzCount', 'is_banned', 'is_followed')
 
 # class ProfileBlitzUserSerializer(serializers.ModelSerializer):
 #     user   = serializers.CharField(source='user.username')
