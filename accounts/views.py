@@ -236,7 +236,7 @@ class GetFollowingView(APIView):
     def post(self, request, format=None):
         json_data = json.loads(request.body)
         client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
-
+	
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
