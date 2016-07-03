@@ -185,12 +185,12 @@ class DailyPhotoChapterView(APIView):
 
     def post(self, request, format=None):
         user = request.user
-        blitzUser = BlitzUser.object.get(user=user)
+        blitzUser = BlitzUser.objects.get(user=user)
 
         json_data = json.loads(request.body)
         client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
 
-        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser).exclude(user__pk__in=client_pks).order_by('-UserChapter__timestamp')
+        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser).exclude(user__pk__in=client_pks).order_by('-userchapter__timestamp')
 
         serializedUserTopics = UserTopicSerializer(userTopics, many=True)
 
