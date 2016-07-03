@@ -7,4 +7,5 @@ urlpatterns = [
     url(r'^uploadUserChapter/$', UploadUserChapterView.as_view(), name='uploadUserChapter'),
     url(r'^getUserChapters/$', GetUserChaptersView.as_view(), name='getUserChapters'),
     url(r'^searchPhotoChapters/$', SearchPhotoChapterView.as_view(), name='searchPhotoChapters'),
+    url(r'^daily/$', DailyPhotoChapterView.as_view(), name='daily'),
 ]
