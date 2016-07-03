@@ -23,7 +23,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 
     def getPhotoChapters(self, userTopic):
         photoChapters = UserChapter.objects.filter(userTopic=userTopic)
-        return UserChapterSerializer(photoChapters, many=True).data
+        return DailyUserChapterSerializer(photoChapters, many=True).data
 
     def isLiked(self, userTopic):
         return self.requestingUser in userTopic.likedBy.all()
