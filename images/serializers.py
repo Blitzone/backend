@@ -49,11 +49,7 @@ class UserChapterSerializer(serializers.ModelSerializer):
         fields = ('id', 'image', 'userTopic', 'chapter', 'user', 'timestamp')
 
 class DailyUserChapterSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('getUser')
     chapter = serializers.SerializerMethodField('getChapter')
-
-    def getUser(self, userChapter):
-        return BlitzUserSerializer(userChapter.userTopic.user).data
 
     def getChapter(self, userChapter):
         return userChapter.chapter.name
