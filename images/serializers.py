@@ -21,7 +21,7 @@ class UserChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserChapter
-        fields = ('id', 'image', 'userTopic', 'chapter', 'user')
+        fields = ('id', 'image', 'userTopic', 'chapter', 'user', 'timestamp')
 
 class SearchUserChapterSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('getUser')

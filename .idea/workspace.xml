@@ -2,9 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="bf3480fe-2ddf-44a6-aba4-0dfa93ca25b7" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/accounts/const.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/accounts/views.py" afterPath="$PROJECT_DIR$/accounts/views.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/models.py" afterPath="$PROJECT_DIR$/images/models.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/serializers.py" afterPath="$PROJECT_DIR$/images/serializers.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/images/views.py" afterPath="$PROJECT_DIR$/images/views.py" />
     </list>
     <ignored path="blitz.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -25,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/images/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1193">
-              <caret line="176" column="67" selection-start-line="176" selection-start-column="67" selection-end-line="176" selection-end-column="67" />
+            <state relative-caret-position="488">
+              <caret line="187" column="51" selection-start-line="187" selection-start-column="51" selection-end-line="187" selection-end-column="51" />
               <folding>
                 <element signature="e#0#115#0" expanded="true" />
               </folding>
@@ -37,21 +38,31 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/images/urls.py">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/images/models.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="10" column="0" selection-start-line="10" selection-start-column="0" selection-end-line="10" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="views.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="models.py" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/accounts/models.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="75">
+              <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="views.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/accounts/views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="683">
-              <caret line="268" column="9" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="9" />
+            <state relative-caret-position="323">
+              <caret line="245" column="24" selection-start-line="245" selection-start-column="24" selection-end-line="245" selection-end-column="24" />
               <folding>
                 <element signature="e#0#156#0" expanded="true" />
               </folding>
@@ -59,43 +70,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="const.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/accounts/const.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="60">
-              <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/accounts/serializers.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="120">
-              <caret line="9" column="58" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
-              <folding>
-                <element signature="e#0#38#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="urls.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/accounts/urls.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="18" column="0" selection-start-line="18" selection-start-column="0" selection-end-line="18" selection-end-column="0" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="serializers.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/images/serializers.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="240">
-              <caret line="19" column="67" selection-start-line="19" selection-start-column="67" selection-end-line="19" selection-end-column="67" />
+            <state relative-caret-position="345">
+              <caret line="23" column="76" selection-start-line="23" selection-start-column="76" selection-end-line="23" selection-end-column="76" />
               <folding>
                 <element signature="e#0#38#0" expanded="true" />
               </folding>
@@ -116,24 +95,24 @@
         <option value="$PROJECT_DIR$/accounts/admin.py" />
         <option value="$PROJECT_DIR$/images/admin.py" />
         <option value="$PROJECT_DIR$/blitz/settings.py" />
-        <option value="$PROJECT_DIR$/images/models.py" />
         <option value="$PROJECT_DIR$/blitz/urls.py" />
         <option value="$PROJECT_DIR$/images/urls.py" />
         <option value="$PROJECT_DIR$/accounts/models.py" />
-        <option value="$PROJECT_DIR$/images/serializers.py" />
-        <option value="$PROJECT_DIR$/images/views.py" />
         <option value="$PROJECT_DIR$/accounts/urls.py" />
         <option value="$PROJECT_DIR$/accounts/serializers.py" />
         <option value="$PROJECT_DIR$/accounts/const.py" />
         <option value="$PROJECT_DIR$/accounts/views.py" />
+        <option value="$PROJECT_DIR$/images/models.py" />
+        <option value="$PROJECT_DIR$/images/serializers.py" />
+        <option value="$PROJECT_DIR$/images/views.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
     <option name="x" value="49" />
-    <option name="y" value="-4" />
+    <option name="y" value="24" />
     <option name="width" value="1551" />
-    <option name="height" value="904" />
+    <option name="height" value="876" />
   </component>
   <component name="ProjectInspectionProfilesVisibleTreeState">
     <entry key="Project Default">
@@ -179,6 +158,7 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
+      <pane id="Scratches" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -260,7 +240,6 @@
         </subPane>
       </pane>
       <pane id="Scope" />
-      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -421,7 +400,7 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="49" y="-4" width="1551" height="904" extended-state="6" />
+    <frame x="49" y="24" width="1551" height="876" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.24822696" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
@@ -811,17 +790,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/accounts/models.py">
+    <entry file="file://$PROJECT_DIR$/accounts/const.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="135">
-          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="413">
-          <caret line="46" column="0" selection-start-line="46" selection-start-column="0" selection-end-line="46" selection-end-column="0" />
+        <state relative-caret-position="60">
+          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -835,7 +808,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/accounts/serializers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="120">
+        <state relative-caret-position="135">
           <caret line="9" column="58" selection-start-line="9" selection-start-column="58" selection-end-line="9" selection-end-column="58" />
           <folding>
             <element signature="e#0#38#0" expanded="true" />
@@ -851,40 +824,48 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/images/serializers.py">
+    <entry file="file://$PROJECT_DIR$/accounts/models.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="240">
-          <caret line="19" column="67" selection-start-line="19" selection-start-column="67" selection-end-line="19" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#38#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/images/views.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1193">
-          <caret line="176" column="67" selection-start-line="176" selection-start-column="67" selection-end-line="176" selection-end-column="67" />
-          <folding>
-            <element signature="e#0#115#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/accounts/const.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="52" selection-start-line="4" selection-start-column="52" selection-end-line="4" selection-end-column="52" />
+        <state relative-caret-position="75">
+          <caret line="9" column="0" selection-start-line="9" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/accounts/views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="683">
-          <caret line="268" column="9" selection-start-line="268" selection-start-column="9" selection-end-line="268" selection-end-column="9" />
+        <state relative-caret-position="323">
+          <caret line="245" column="24" selection-start-line="245" selection-start-column="24" selection-end-line="245" selection-end-column="24" />
           <folding>
             <element signature="e#0#156#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/serializers.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="345">
+          <caret line="23" column="76" selection-start-line="23" selection-start-column="76" selection-end-line="23" selection-end-column="76" />
+          <folding>
+            <element signature="e#0#38#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/models.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="225">
+          <caret line="33" column="0" selection-start-line="33" selection-start-column="0" selection-end-line="33" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/images/views.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="488">
+          <caret line="187" column="51" selection-start-line="187" selection-start-column="51" selection-end-line="187" selection-end-column="51" />
+          <folding>
+            <element signature="e#0#115#0" expanded="true" />
           </folding>
         </state>
       </provider>

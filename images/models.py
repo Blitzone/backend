@@ -49,6 +49,7 @@ class UserChapter(models.Model):
     image               = models.ImageField(upload_to=user_directory_path)
     userTopic           = models.ForeignKey(UserTopic, on_delete=models.CASCADE, default=0)
     chapter             = models.ForeignKey(Chapter, on_delete=models.CASCADE, default=0)
+    timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.chapter.name
