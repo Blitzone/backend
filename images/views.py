@@ -11,7 +11,7 @@ from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import *
 from django.utils import timezone
-from datetime import datetime
+from const import *
 
 class UploadUserChapterView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
@@ -190,9 +190,10 @@ class DailyPhotoChapterView(APIView):
         json_data = json.loads(request.body)
         client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
 
-        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser).exclude(user__pk__in=client_pks).order_by('-userchapter__timestamp')
+	topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
+        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser, topic=topic).exclude(user__pk__in=client_pks).order_by('-userchapter__timestamp')
 
-        serializedUserTopics = UserTopicSerializer(userTopics, many=True)
+        serializedUserTopics = DailyUserTopicSerializer(userTopics[0 : const.NUM_DAILY_USER_TOPICS], many=True, requestingUser=blitzUser)
 
         return Response(
             {

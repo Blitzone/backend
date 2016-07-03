@@ -9,7 +9,7 @@ class UserTopicSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'topic', 'likes', 'dislikes')
 
 class DailyUserTopicSerializer(serializers.ModelSerializer):
-    username = serializers.SerializerMethodField('getUsername')
+    user = serializers.SerializerMethodField('getUsername')
     photoChapters = serializers.SerializerMethodField('getPhotoChapters')
     is_liked = serializers.SerializerMethodField('isLiked')
 
@@ -19,7 +19,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
         super(DailyUserTopicSerializer, self).__init__(*args, **kwargs)
 
     def getUsername(self, userTopic):
-        return BlitzUserSerializer(BlitzUser.objects.get(user=userTopic.user)).data
+        return BlitzUserSerializer(userTopic.user).data
 
     def getPhotoChapters(self, userTopic):
         photoChapters = UserChapter.objects.filter(userTopic=userTopic)
@@ -30,7 +30,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserTopic
-        fields = ('user', 'username', 'likes', 'dislikes', 'is_liked', 'photoChapters')
+        fields = ('user', 'likes', 'dislikes', 'is_liked', 'photoChapters')
 
 
 class TopicSerializer(serializers.ModelSerializer):
