@@ -220,7 +220,7 @@ class LikeTopicView(APIView):
 
         try:
             userTopic.likedBy.add(blitzUser)
-            userTopic.save()
+	    userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {
