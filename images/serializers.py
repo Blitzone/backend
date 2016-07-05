@@ -12,7 +12,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
     user = serializers.SerializerMethodField('getUsername')
     photoChapters = serializers.SerializerMethodField('getPhotoChapters')
     is_liked = serializers.SerializerMethodField('isLiked')
-
+    is_liked = serializers.SerializerMethodField('isDisliked')
 
     def __init__(self, *args, **kwargs):
         self.requestingUser = kwargs.pop('requestingUser', None)
@@ -28,9 +28,19 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
     def isLiked(self, userTopic):
         return self.requestingUser in userTopic.likedBy.all()
 
+    def isDisliked(self, userTopic):
+	return self.requestingUser in userTopic.dislikedBy.all()
+
     class Meta:
         model = UserTopic
-        fields = ('user', 'likes', 'dislikes', 'is_liked', 'photoChapters', 'timestampUpdated')
+        fields = (
+		'user', 
+		'likes', 
+		'dislikes', 
+		'is_liked', 
+		'is_disliked', 
+		'photoChapters', 
+		'timestampUpdated')
 
 
 class TopicSerializer(serializers.ModelSerializer):
