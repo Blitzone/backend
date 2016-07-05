@@ -7,6 +7,7 @@ from rest_framework import permissions
 from rest_framework_jwt.settings import api_settings
 from django.core.files.images import ImageFile
 import json, datetime
+from django.contrib.auth.models import User
 from accounts.models import BlitzUser
 from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import *
@@ -207,16 +208,19 @@ class LikeTopicView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
-        user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
+        blitzUser = BlitzUser.objects.get(user=request.user)
 
         json_data = json.loads(request.body)
-        userTopicPk = json_data["userTopic"]
+        userPk = json_data["user"]
 
-        userTopic = UserTopic.objects.get(pk=userTopicPk)
+        user = User.objects.get(pk=userPk)
+        bUser = BlitzUser.objects.get(user=user)
+
+        userTopic = UserTopic.objects.get(user=bUser)
 
         try:
             userTopic.likedBy.add(blitzUser)
+            userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {
@@ -235,16 +239,19 @@ class UnLikeTopicView(APIView):
     permission_classes = (permissions.IsAuthenticated,)
 
     def post(self, request, format=None):
-        user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
+        blitzUser = BlitzUser.objects.get(user=request.user)
 
         json_data = json.loads(request.body)
-        userTopicPk = json_data["userTopic"]
+        userPk = json_data["user"]
 
-        userTopic = UserTopic.objects.get(pk=userTopicPk)
+        user = User.objects.get(pk=userPk)
+        bUser = BlitzUser.objects.get(user=user)
+
+        userTopic = UserTopic.objects.get(user=bUser)
 
         try:
             userTopic.likedBy.remove(blitzUser)
+            userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {
@@ -263,16 +270,19 @@ class DisLikeTopicView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
-        user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
+        blitzUser = BlitzUser.objects.get(user=request.user)
 
         json_data = json.loads(request.body)
-        userTopicPk = json_data["userTopic"]
+        userPk = json_data["user"]
 
-        userTopic = UserTopic.objects.get(pk=userTopicPk)
+        user = User.objects.get(pk=userPk)
+        bUser = BlitzUser.objects.get(user=user)
+
+        userTopic = UserTopic.objects.get(user=bUser)
 
         try:
             userTopic.dislikedBy.add(blitzUser)
+            userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {
@@ -291,16 +301,19 @@ class UnDisLikeTopicView(APIView):
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
-        user = request.user
-        blitzUser = BlitzUser.objects.get(user=user)
+        blitzUser = BlitzUser.objects.get(user=request.user)
 
         json_data = json.loads(request.body)
-        userTopicPk = json_data["userTopic"]
+        userPk = json_data["user"]
 
-        userTopic = UserTopic.objects.get(pk=userTopicPk)
+        user = User.objects.get(pk=userPk)
+        bUser = BlitzUser.objects.get(user=user)
+
+        userTopic = UserTopic.objects.get(user=bUser)
 
         try:
             userTopic.dislikedBy.remove(blitzUser)
+            userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {

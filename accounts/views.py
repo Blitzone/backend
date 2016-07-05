@@ -192,6 +192,7 @@ class AddFollowView(APIView):
 
         try:
             blitzUser.follows.add(BlitzUser.objects.get(user__username=followedUser))
+            blitzUser.save()
         except BlitzUser.DoesNotExist:
             return Response(
                 {
@@ -217,6 +218,7 @@ class DelFollowView(APIView):
 
         try:
             blitzUser.follows.remove(BlitzUser.objects.get(user__username=followedUser))
+            blitzUser.save()
         except BlitzUser.DoesNotExist:
             return Response(
                 {
