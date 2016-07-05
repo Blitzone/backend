@@ -196,9 +196,120 @@ class DailyPhotoChapterView(APIView):
         userTopics = UserTopic.objects.filter(user__followed_by=blitzUser, topic=topic).exclude(user__pk__in=client_pks)
 
         serializedUserTopics = DailyUserTopicSerializer(userTopics[0 : const.NUM_DAILY_USER_TOPICS], many=True, requestingUser=blitzUser)
-	print serializedUserTopics.data
         return Response(
             {
                 "userTopics" : serializedUserTopics.data
+            }
+        )
+
+class LikeTopicView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        json_data = json.loads(request.body)
+        userTopicPk = json_data["userTopic"]
+
+        userTopic = UserTopic.objects.get(pk=userTopicPk)
+
+        try:
+            userTopic.likedBy.add(blitzUser)
+        except UserTopic.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+        #TODO check if user is disliked before liking, or if user doesn't exist etc.
+        return Response(
+            {
+                "statusCode": HTTP_200_OK
+            }
+        )
+
+class UnLikeTopicView(APIView):
+    parser_classes = (JSONParser,)
+    permission_classes = (permissions.IsAuthenticated,)
+
+    def post(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        json_data = json.loads(request.body)
+        userTopicPk = json_data["userTopic"]
+
+        userTopic = UserTopic.objects.get(pk=userTopicPk)
+
+        try:
+            userTopic.likedBy.remove(blitzUser)
+        except UserTopic.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+        return Response(
+            {
+                "statusCode": HTTP_200_OK
+            }
+        )
+
+
+class DisLikeTopicView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        json_data = json.loads(request.body)
+        userTopicPk = json_data["userTopic"]
+
+        userTopic = UserTopic.objects.get(pk=userTopicPk)
+
+        try:
+            userTopic.dislikedBy.add(blitzUser)
+        except UserTopic.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+
+        return Response(
+            {
+                "statusCode": HTTP_200_OK
+            }
+        )
+
+class UnDisLikeTopicView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        user = request.user
+        blitzUser = BlitzUser.objects.get(user=user)
+
+        json_data = json.loads(request.body)
+        userTopicPk = json_data["userTopic"]
+
+        userTopic = UserTopic.objects.get(pk=userTopicPk)
+
+        try:
+            userTopic.dislikedBy.remove(blitzUser)
+        except UserTopic.DoesNotExist:
+            return Response(
+                {
+                    "statusCode": HTTP_404_NOT_FOUND
+                }
+            )
+
+        return Response(
+            {
+                "statusCode": HTTP_200_OK
             }
         )

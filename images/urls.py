@@ -8,4 +8,8 @@ urlpatterns = [
     url(r'^getUserChapters/$', GetUserChaptersView.as_view(), name='getUserChapters'),
     url(r'^searchPhotoChapters/$', SearchPhotoChapterView.as_view(), name='searchPhotoChapters'),
     url(r'^daily/$', DailyPhotoChapterView.as_view(), name='daily'),
+    url(r'^likeTopic/$', LikeTopicView.as_view(), name='likeTopic'),
+    url(r'^unlikeTopic/$', UnLikeTopicView.as_view(), name='unlikeTopic'),
+    url(r'^dislikeTopic/$', DisLikeTopicView.as_view(), name='dislikeTopic'),
+    url(r'^undislikeTopic/$', UnDisLikeTopicView.as_view(), name='undislikeTopic'),
 ]
