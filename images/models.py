@@ -31,6 +31,10 @@ class UserTopic(models.Model):
     dislikes    = models.IntegerField(default=0)
     likedBy     = models.ManyToManyField(BlitzUser, related_name='likes')
     dislikedBy  = models.ManyToManyField(BlitzUser, related_name='dislikes')
+    timestampUpdated = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+	ordering = ['-timestampUpdated']
 
     def __str__(self):
         return self.topic.name
@@ -49,7 +53,6 @@ class UserChapter(models.Model):
     image               = models.ImageField(upload_to=user_directory_path)
     userTopic           = models.ForeignKey(UserTopic, on_delete=models.CASCADE, default=0)
     chapter             = models.ForeignKey(Chapter, on_delete=models.CASCADE, default=0)
-    timestamp           = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.chapter.name

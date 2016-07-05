@@ -48,6 +48,8 @@ class UploadUserChapterView(APIView):
             userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
             userChapter.image = image
             userChapter.save()
+	    userTopic.timestampUpdated = datetime.datetime.now()
+	    userTopic.save()
         except UserChapter.DoesNotExist:
             userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
             userChapter.save()
@@ -191,10 +193,10 @@ class DailyPhotoChapterView(APIView):
         client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
 
 	topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
-        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser, topic=topic).exclude(user__pk__in=client_pks).order_by('-userchapter__timestamp')
+        userTopics = UserTopic.objects.filter(user__followed_by=blitzUser, topic=topic).exclude(user__pk__in=client_pks)
 
         serializedUserTopics = DailyUserTopicSerializer(userTopics[0 : const.NUM_DAILY_USER_TOPICS], many=True, requestingUser=blitzUser)
-
+	print serializedUserTopics.data
         return Response(
             {
                 "userTopics" : serializedUserTopics.data

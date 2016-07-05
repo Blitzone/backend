@@ -30,7 +30,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserTopic
-        fields = ('user', 'likes', 'dislikes', 'is_liked', 'photoChapters')
+        fields = ('user', 'likes', 'dislikes', 'is_liked', 'photoChapters', 'timestampUpdated')
 
 
 class TopicSerializer(serializers.ModelSerializer):
@@ -46,7 +46,7 @@ class UserChapterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = UserChapter
-        fields = ('id', 'image', 'userTopic', 'chapter', 'user', 'timestamp')
+        fields = ('id', 'image', 'userTopic', 'chapter', 'user')
 
 class DailyUserChapterSerializer(serializers.ModelSerializer):
     chapter = serializers.SerializerMethodField('getChapter')
@@ -55,7 +55,7 @@ class DailyUserChapterSerializer(serializers.ModelSerializer):
         return userChapter.chapter.name
     class Meta:
         model = UserChapter
-        fields = ('image', 'chapter', 'timestamp')
+        fields = ('image', 'chapter')
 
 
 class SearchUserChapterSerializer(serializers.ModelSerializer):
