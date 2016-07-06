@@ -23,8 +23,6 @@ class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
     def getIsFollowed(self, user):
         requestingBlitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
-	print user
-	print requestingBlitzUser.follows.all()
         return user in requestingBlitzUser.follows.all()
 
     class Meta:

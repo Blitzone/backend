@@ -26,12 +26,12 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
         return DailyUserChapterSerializer(photoChapters, many=True).data
 
     def isLiked(self, userTopic):
-	print userTopic
-	print self.requestingUser.likes.all()
-        return userTopic in self.requestingUser.likes.all()
+        blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
+        return userTopic in blitzUser.likes.all()
 
     def isDisliked(self, userTopic):
-	return userTopic in self.requestingUser.likes.all()
+        blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
+        return userTopic in blitzUser.likes.all()
 
     class Meta:
         model = UserTopic
