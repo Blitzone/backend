@@ -37,7 +37,7 @@ class UserTopic(models.Model):
 	ordering = ['-timestampUpdated']
 
     def __str__(self):
-        return self.topic.name
+        return self.topic.name + '-' + self.user.user.username
 
 
 

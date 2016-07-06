@@ -213,9 +213,7 @@ class LikeTopicView(APIView):
         json_data = json.loads(request.body)
         userPk = json_data["user"]
 
-        user = User.objects.get(pk=userPk)
-        bUser = BlitzUser.objects.get(user=user)
-
+        bUser = BlitzUser.objects.get(pk=userPk)
         userTopic = UserTopic.objects.get(user=bUser)
 
         try:
@@ -244,9 +242,7 @@ class UnLikeTopicView(APIView):
         json_data = json.loads(request.body)
         userPk = json_data["user"]
 
-        user = User.objects.get(pk=userPk)
-        bUser = BlitzUser.objects.get(user=user)
-
+        bUser = BlitzUser.objects.get(pk=userPk)
         userTopic = UserTopic.objects.get(user=bUser)
 
         try:
@@ -275,8 +271,7 @@ class DisLikeTopicView(APIView):
         json_data = json.loads(request.body)
         userPk = json_data["user"]
 
-        user = User.objects.get(pk=userPk)
-        bUser = BlitzUser.objects.get(user=user)
+        bUser = BlitzUser.objects.get(pk=userPk)
 
         userTopic = UserTopic.objects.get(user=bUser)
 
@@ -306,8 +301,7 @@ class UnDisLikeTopicView(APIView):
         json_data = json.loads(request.body)
         userPk = json_data["user"]
 
-        user = User.objects.get(pk=userPk)
-        bUser = BlitzUser.objects.get(user=user)
+        bUser = BlitzUser.objects.get(pk=userPk)
 
         userTopic = UserTopic.objects.get(user=bUser)
 
