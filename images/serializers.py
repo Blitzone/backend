@@ -27,12 +27,12 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 
     def isLiked(self, userTopic):
         blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
-	t = UserTopic.objects.get(pk=userTopic.pk)
+        t = UserTopic.objects.get(pk=userTopic.pk)
         return t in blitzUser.likes.all()
 
     def isDisliked(self, userTopic):
         blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
-	t = UserTopic.objects.get(pk=userTopic.pk)
+        t = UserTopic.objects.get(pk=userTopic.pk)
         return t in blitzUser.dislikes.all()
 
     class Meta:

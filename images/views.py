@@ -95,11 +95,8 @@ class GetUserChaptersView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        # Get the chapter
-        json_data = json.loads(request.body)
-        topicId = json_data["topic"]
+        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
 
-        topic = Topic.objects.get(pk=topicId)
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
             userChapters = UserChapter.objects.filter(userTopic=userTopic)
@@ -107,8 +104,6 @@ class GetUserChaptersView(APIView):
             return Response(
                 {
                     "userChapters" : serializedUserChapters.data,
-		    "likes" : userTopic.likes,
-		    "dislikes" : userTopic.dislikes
                 }
             )
         except UserChapter.DoesNotExist:
@@ -195,7 +190,7 @@ class DailyPhotoChapterView(APIView):
         json_data = json.loads(request.body)
         client_pks = json_data["client_pks"] #From where to start counting users. Need to send 30 users at a time.
 
-	topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
+        topic = Topic.objects.get(endDate__gte=timezone.now(), startDate__lte=timezone.now())
         userTopics = UserTopic.objects.filter(user__followed_by=blitzUser, topic=topic).exclude(user__pk__in=client_pks)
 
         serializedUserTopics = DailyUserTopicSerializer(userTopics[0 : const.NUM_DAILY_USER_TOPICS], many=True, requestingUser=blitzUser)
@@ -220,8 +215,8 @@ class LikeTopicView(APIView):
 
         try:
             userTopic.likedBy.add(blitzUser)
-    	    userTopic.likes = userTopic.likes + 1 #TODO fix this to be done automatically
-	    userTopic.save()
+            userTopic.likes = userTopic.likes + 1 #TODO fix this to be done automatically
+            userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
                 {

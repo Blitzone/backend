@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import BlitzUser
+from images.models import *
 
 class BlitzUserSerializer(serializers.ModelSerializer):
     user   = serializers.CharField(source='user.username')
@@ -23,24 +24,34 @@ class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
     def getIsFollowed(self, user):
         requestingBlitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
-	print user
-	print requestingBlitzUser.follows.all()
         return user in requestingBlitzUser.follows.all()
 
     class Meta:
         model = BlitzUser
         fields = ('pk', 'user', 'avatar', 'blitzCount', 'is_banned', 'is_followed')
 
-# class ProfileBlitzUserSerializer(serializers.ModelSerializer):
-#     user   = serializers.CharField(source='user.username')
-#     avatar = serializers.ImageField(max_length=None)
-#     followers = serializers.SerializerMethodField('getFollowers')
-#     following = serializers.SerializerMethodField('getFollowing')
-#
-#     def getFollowing(self, user):
-#         return BlitzUserSerializer(user.follows.all(), many=True).data
-#     def getFollowers(self, user):
-#         return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
-#     class Meta:
-#         model = BlitzUser
-#         fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following')
+class ProfileBlitzUserSerializer(serializers.ModelSerializer):
+    user   = serializers.CharField(source='user.username')
+    avatar = serializers.ImageField(max_length=None)
+    followers = serializers.SerializerMethodField('getFollowers')
+    following = serializers.SerializerMethodField('getFollowing')
+    likes = serializers.SerializerMethodField('getLikes')
+    dislikes = serializers.SerializerMethodField('getDislikes')
+
+    def getLikes(self, user):
+        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        userTopic = UserTopic.objects.get(user=user, topic=topic)
+        return len(userTopic.likedBy.all())
+
+    def getDislikes(self, user):
+        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        userTopic = UserTopic.objects.get(user=user, topic=topic)
+        return len(userTopic.dislikedBy.all())
+
+    def getFollowing(self, user):
+        return BlitzUserSerializer(user.follows.all(), many=True).data
+    def getFollowers(self, user):
+        return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
+    class Meta:
+        model = BlitzUser
+        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following')
