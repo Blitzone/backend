@@ -54,4 +54,4 @@ class ProfileBlitzUserSerializer(serializers.ModelSerializer):
         return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
     class Meta:
         model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following')
+        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following', 'likes', 'dislikes')
