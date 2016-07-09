@@ -106,7 +106,9 @@ class GetUserChaptersView(APIView):
             serializedUserChapters = UserChapterSerializer(userChapters, many=True)
             return Response(
                 {
-                    "userChapters" : serializedUserChapters.data
+                    "userChapters" : serializedUserChapters.data,
+		    "likes" : userTopic.likes,
+		    "dislikes" : userTopic.dislikes
                 }
             )
         except UserChapter.DoesNotExist:
@@ -218,6 +220,7 @@ class LikeTopicView(APIView):
 
         try:
             userTopic.likedBy.add(blitzUser)
+    	    userTopic.likes = userTopic.likes + 1 #TODO fix this to be done automatically
 	    userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
@@ -247,6 +250,7 @@ class UnLikeTopicView(APIView):
 
         try:
             userTopic.likedBy.remove(blitzUser)
+	    userTopic.likes = userTopic.likes - 1
             userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
@@ -277,6 +281,7 @@ class DisLikeTopicView(APIView):
 
         try:
             userTopic.dislikedBy.add(blitzUser)
+    	    userTopic.dislikes = userTopic.dislikes + 1
             userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
@@ -307,6 +312,7 @@ class UnDisLikeTopicView(APIView):
 
         try:
             userTopic.dislikedBy.remove(blitzUser)
+	    userTopic.dislikes = userTopic.dislikes - 1
             userTopic.save()
         except UserTopic.DoesNotExist:
             return Response(
