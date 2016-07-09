@@ -34,7 +34,6 @@ class ProfileBlitzUserSerializer(serializers.ModelSerializer):
     user   = serializers.CharField(source='user.username')
     avatar = serializers.ImageField(max_length=None)
     followers = serializers.SerializerMethodField('getFollowers')
-    following = serializers.SerializerMethodField('getFollowing')
     likes = serializers.SerializerMethodField('getLikes')
     dislikes = serializers.SerializerMethodField('getDislikes')
 
@@ -48,10 +47,8 @@ class ProfileBlitzUserSerializer(serializers.ModelSerializer):
         userTopic = UserTopic.objects.get(user=user, topic=topic)
         return len(userTopic.dislikedBy.all())
 
-    def getFollowing(self, user):
-        return BlitzUserSerializer(user.follows.all(), many=True).data
     def getFollowers(self, user):
-        return BlitzUserSerializer(BlitzUser.objects.filter(follows=user), many=True).data
+        return len(BlitzUser.objects.filter(follows=user))
     class Meta:
         model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'following', 'likes', 'dislikes')
+        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'likes', 'dislikes')
