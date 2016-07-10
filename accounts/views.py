@@ -243,7 +243,7 @@ class GetFollowingView(APIView):
         blitzUser = BlitzUser.objects.get(user=user)
 
         following = blitzUser.follows.all().exclude(pk__in=client_pks).order_by('-blitzCount')
-        serializedFollowing = BlitzUserSerializer(following[0 : const.NUM_FOLLOWING_USERS], many=True)
+        serializedFollowing = FollowingBlitzUserSerializer(following[0 : const.NUM_FOLLOWING_USERS], many=True, requestingUser=user.username)
 
         return Response(
             {

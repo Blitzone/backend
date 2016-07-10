@@ -1,6 +1,7 @@
 from rest_framework import serializers
 from .models import BlitzUser
 from images.models import *
+from django.db.models import Q
 
 class BlitzUserSerializer(serializers.ModelSerializer):
     user   = serializers.CharField(source='user.username')
@@ -12,6 +13,25 @@ class BlitzUserSerializer(serializers.ModelSerializer):
     class Meta:
         model = BlitzUser
         fields = ('pk', 'user', 'avatar', 'blitzCount', 'followers', 'is_banned')
+
+class FollowingBlitzUserSerializer(serializers.ModelSerializer):
+    user   = serializers.CharField(source='user.username')
+    avatar = serializers.ImageField(max_length=None)
+    is_blitzed = serializers.SerializerMethodField('isBlitzed')
+
+
+    def __init__(self, *args, **kwargs):
+        self.requestingUser = kwargs.pop('requestingUser', None)
+        super(FollowingBlitzUserSerializer, self).__init__(*args, **kwargs)
+
+    def isBlitzed(self, user):
+        blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
+        return Blitz.objects.filter(Q(user1=blitzUser, user2=user) | Q(user1=user, user2=blitzUser)).count() > 0
+
+    class Meta:
+        model = BlitzUser
+        fields = ('pk', 'user', 'avatar', 'blitzCount', 'is_blitzed', 'is_banned')
+
 
 class SearchBlitzUserSerializer(serializers.ModelSerializer):
 
