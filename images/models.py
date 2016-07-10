@@ -62,7 +62,7 @@ class Blitz(models.Model):
     user1               = models.ForeignKey(BlitzUser, related_name='blitzUser1', on_delete=models.CASCADE, default=0)
     user2               = models.ForeignKey(BlitzUser, related_name='blitzUser2', on_delete=models.CASCADE, default=0)
     topic               = models.ForeignKey(Topic, on_delete=models.CASCADE, default=0)
-    text                = models.CharField(max_length=256)
+    #text                = models.CharField(max_length=256)
 
     def __str__(self):
         return self.user1 + ", " + self.user2 + ": " + self.topic.name

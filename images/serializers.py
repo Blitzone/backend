@@ -39,7 +39,7 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 
     def isBlitzed(self, userTopic):
         blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
-        return Blitz.objects.get(Q(user1=blitzUser, user2=userTopic.user) | Q(user1=userTopic.user, user2=blitzUser)).exists()
+        return Blitz.objects.filter(Q(user1=blitzUser, user2=userTopic.user) | Q(user1=userTopic.user, user2=blitzUser)).count() > 0
 
     class Meta:
         model = UserTopic

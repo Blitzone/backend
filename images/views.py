@@ -328,16 +328,17 @@ class SendBlitzView(APIView):
 
         json_data       = json.loads(request.body)
         userPk          = json_data["user"]
-        challengeText   = json_data["text"]
+        #challengeText   = json_data["text"]
 
         blitzedUser     = BlitzUser.objects.get(pk=userPk)
 
 
         topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
 
-        if not Blitz.objects.get(Q(user1=requestingUser, user2=blitzedUser) | Q(user1=blitzedUser, user2=requestingUser)):
-            blitz = Blitz(user1=requestingUser, user2=blitzedUser, topic=topic, challengeText=challengeText)
-            blitz.save()
+        if not Blitz.objects.filter(Q(user1=requestingUser, user2=blitzedUser) | Q(user1=blitzedUser, user2=requestingUser)).count() > 0:
+            #blitz = Blitz(user1=requestingUser, user2=blitzedUser, topic=topic, challengeText=challengeText)
+            blitz = Blitz(user1=requestingUser, user2=blitzedUser, topic=topic)
+	    blitz.save()
             return Response(
                 {
                     "statusCode" : HTTP_200_OK
