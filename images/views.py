@@ -1,4 +1,4 @@
-from rest_framework.status import HTTP_500_INTERNAL_SERVER_ERROR, HTTP_200_OK, HTTP_201_CREATED, HTTP_404_NOT_FOUND
+from rest_framework.status import *
 
 from rest_framework.views import APIView
 from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
@@ -13,6 +13,7 @@ from .models import Topic, UserTopic, Chapter,UserChapter
 from .serializers import *
 from django.utils import timezone
 from const import *
+from django.db.models import Q
 
 class UploadUserChapterView(APIView):
     parser_classes = (MultiPartParser, FormParser, )
@@ -317,3 +318,34 @@ class UnDisLikeTopicView(APIView):
                 "statusCode": HTTP_200_OK
             }
         )
+
+class SendBlitzView(APIView):
+    parser_classes = (JSONParser, )
+    permission_classes = (permissions.IsAuthenticated, )
+
+    def post(self, request, format=None):
+        requestingUser  = BlitzUser.objects.get(user=request.user)
+
+        json_data       = json.loads(request.body)
+        userPk          = json_data["user"]
+        challengeText   = json_data["text"]
+
+        blitzedUser     = BlitzUser.objects.get(pk=userPk)
+
+
+        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+
+        if not Blitz.objects.get(Q(user1=requestingUser, user2=blitzedUser) | Q(user1=blitzedUser, user2=requestingUser)):
+            blitz = Blitz(user1=requestingUser, user2=blitzedUser, topic=topic, challengeText=challengeText)
+            blitz.save()
+            return Response(
+                {
+                    "statusCode" : HTTP_200_OK
+                }
+            )
+        else:
+            return Response(
+                {
+                    "statusCode" : HTTP_409_CONFLICT
+                }
+            )

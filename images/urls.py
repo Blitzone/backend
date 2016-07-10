@@ -12,4 +12,5 @@ urlpatterns = [
     url(r'^unlikeTopic/$', UnLikeTopicView.as_view(), name='unlikeTopic'),
     url(r'^dislikeTopic/$', DisLikeTopicView.as_view(), name='dislikeTopic'),
     url(r'^undislikeTopic/$', UnDisLikeTopicView.as_view(), name='undislikeTopic'),
+    url(r'^sendBlitz/$', SendBlitzView.as_view(), name='sendBlitz'),
 ]

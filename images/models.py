@@ -1,6 +1,7 @@
 from __future__ import unicode_literals
 
 from django.db import models
+from django.db.models import signals
 from accounts.models import BlitzUser
 from django.utils.timezone import now
 from django.contrib.postgres.fields import ArrayField
@@ -60,9 +61,9 @@ class UserChapter(models.Model):
 class Blitz(models.Model):
     user1               = models.ForeignKey(BlitzUser, related_name='blitzUser1', on_delete=models.CASCADE, default=0)
     user2               = models.ForeignKey(BlitzUser, related_name='blitzUser2', on_delete=models.CASCADE, default=0)
-    winner              = models.ForeignKey(BlitzUser, related_name='wins', on_delete=models.CASCADE, default=0)
-    userTopic           = models.ForeignKey(UserTopic, on_delete=models.CASCADE, default=0)
+    topic               = models.ForeignKey(Topic, on_delete=models.CASCADE, default=0)
+    text                = models.CharField(max_length=256)
 
     def __str__(self):
-        return self.user1 + ", " + self.user2
+        return self.user1 + ", " + self.user2 + ": " + self.topic.name
 

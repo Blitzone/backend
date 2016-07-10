@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Topic, Chapter, Blitz, UserTopic, UserChapter
 from accounts.serializers import BlitzUserSerializer
 from accounts.models import BlitzUser
+from django.db.models import Q
 
 class UserTopicSerializer(serializers.ModelSerializer):
     class Meta:
@@ -9,10 +10,11 @@ class UserTopicSerializer(serializers.ModelSerializer):
         fields = ('id', 'user', 'topic', 'likes', 'dislikes')
 
 class DailyUserTopicSerializer(serializers.ModelSerializer):
-    user = serializers.SerializerMethodField('getUsername')
-    photoChapters = serializers.SerializerMethodField('getPhotoChapters')
-    is_liked = serializers.SerializerMethodField('isLiked')
-    is_disliked = serializers.SerializerMethodField('isDisliked')
+    user            = serializers.SerializerMethodField('getUsername')
+    photoChapters   = serializers.SerializerMethodField('getPhotoChapters')
+    is_liked        = serializers.SerializerMethodField('isLiked')
+    is_disliked     = serializers.SerializerMethodField('isDisliked')
+    is_blitzed      = serializers.SerializerMethodField('isBlitzed')
 
     def __init__(self, *args, **kwargs):
         self.requestingUser = kwargs.pop('requestingUser', None)
@@ -35,6 +37,10 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
         t = UserTopic.objects.get(pk=userTopic.pk)
         return t in blitzUser.dislikes.all()
 
+    def isBlitzed(self, userTopic):
+        blitzUser = BlitzUser.objects.get(user__username=self.requestingUser)
+        return Blitz.objects.get(Q(user1=blitzUser, user2=userTopic.user) | Q(user1=userTopic.user, user2=blitzUser)).exists()
+
     class Meta:
         model = UserTopic
         fields = (
@@ -42,7 +48,8 @@ class DailyUserTopicSerializer(serializers.ModelSerializer):
 		'likes', 
 		'dislikes', 
 		'is_liked', 
-		'is_disliked', 
+		'is_disliked',
+        'is_blitzed',
 		'photoChapters', 
 		'timestampUpdated')
 
