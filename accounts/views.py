@@ -54,7 +54,7 @@ class RegisterView(APIView):
         return Response(
             {
                 "statusCode"    : HTTP_201_CREATED,
-                "token"         : token,
+                "token"         : token.key,
             }
         )
 
@@ -71,7 +71,7 @@ class ProfileView(APIView):
         return Response(serializedBlitzUser.data)
 
 class AvatarView(APIView):
-    parser_classes = (MultiPartParser, FormParser, )
+    parser_classes = (MultiPartParser, FormParser, JSONParser, )
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
@@ -267,3 +267,13 @@ class GetFollowersView(APIView):
                 "followers" : serializedFollowers.data
             }
         )
+
+class VerifyTokenView(APIView):
+	permission_classes = (permissions.IsAuthenticated, )
+	
+	def post(self, request, format=None):
+		return Response(
+			{
+				"statusCode" : HTTP_200_OK
+			}
+		)

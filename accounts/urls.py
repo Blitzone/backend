@@ -5,7 +5,8 @@ from .views import *
 urlpatterns = [
 	url(r'^register/$', RegisterView.as_view(), name='register'),
 	url(r'^profile/$', ProfileView.as_view(), name='profile'),
-	url(r'^getToken/$',views.obtain_auth_token),
+	url(r'^login/$',views.obtain_auth_token),
+	url(r'^verifyToken/$', VerifyTokenView.as_view(), name='verifyToken'),
 	url(r'^avatar/$', AvatarView.as_view(), name='avatar'),
 	url(r'^changeUsername/$', ChangeUsernameView.as_view(), name='changeUsername'),
 	url(r'^changePassword/$', ChangePasswordView.as_view(), name='changePassword'),

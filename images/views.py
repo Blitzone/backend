@@ -16,7 +16,7 @@ from const import *
 from django.db.models import Q
 
 class UploadUserChapterView(APIView):
-    parser_classes = (MultiPartParser, FormParser, )
+    parser_classes = (MultiPartParser, FormParser, JSONParser, )
     permission_classes = (permissions.IsAuthenticated, )
 
     def post(self, request, format=None):
