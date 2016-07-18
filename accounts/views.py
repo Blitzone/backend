@@ -7,7 +7,6 @@ from rest_framework.parsers import JSONParser, MultiPartParser, FormParser
 from rest_framework.response import Response
 from django.contrib.auth.models import User
 from rest_framework import permissions
-from rest_framework_jwt.settings import api_settings
 from django.core.files.images import ImageFile
 from django.contrib.auth import authenticate
 from rest_framework.authtoken.models import Token
@@ -111,11 +110,7 @@ class ChangeUsernameView(APIView):
             user.username = newUsername
             user.save()
 
-            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
+            token = Token.objects.get_or_create(user=user)
 
             return Response(
                 {
@@ -139,12 +134,7 @@ class ChangePasswordView(APIView):
         if user is not None:
             user.set_password(newPassword)
             user.save()
-
-            jwt_payload_handler = api_settings.JWT_PAYLOAD_HANDLER
-            jwt_encode_handler = api_settings.JWT_ENCODE_HANDLER
-
-            payload = jwt_payload_handler(user)
-            token = jwt_encode_handler(payload)
+            token = Token.objects.get_or_create(user=user)
 
             return Response(
                 {
