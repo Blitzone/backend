@@ -62,20 +62,21 @@ class ProfileBlitzUserSerializer(serializers.ModelSerializer):
         topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
         try:
             userTopic = UserTopic.objects.get(user=user, topic=topic)
-    except UserTopic.DoesNotExist:
-        return 0
-    return len(userTopic.likedBy.all())
+    	except UserTopic.DoesNotExist:
+            return 0
+        return len(userTopic.likedBy.all())
 
-def getDislikes(self, user):
-    topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
-    try:
-        userTopic = UserTopic.objects.get(user=user, topic=topic)
-    except UserTopic.DoesNotExist:
-        return 0
-    return len(userTopic.dislikedBy.all())
+    def getDislikes(self, user):
+        topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
+        try:
+            userTopic = UserTopic.objects.get(user=user, topic=topic)
+        except UserTopic.DoesNotExist:
+            return 0
+        return len(userTopic.dislikedBy.all())
 
-def getFollowers(self, user):
-    return len(BlitzUser.objects.filter(follows=user))
-class Meta:
-    model = BlitzUser
-    fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'likes', 'dislikes')
+    def getFollowers(self, user):
+        return len(BlitzUser.objects.filter(follows=user))
+
+    class Meta:
+        model = BlitzUser
+        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'likes', 'dislikes')
