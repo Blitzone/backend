@@ -37,7 +37,7 @@ class UploadUserChapterView(APIView):
 
         #Find topic and userTopic to add the new chapter to.
 
-        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
         except UserTopic.DoesNotExist:
@@ -50,7 +50,7 @@ class UploadUserChapterView(APIView):
             userChapter = UserChapter.objects.get(userTopic=userTopic, chapter=chapter)
             userChapter.image = image
             userChapter.save()
-	    userTopic.timestampUpdated = datetime.datetime.now()
+	    userTopic.timestampUpdated = timezone.now()
 	    userTopic.save()
         except UserChapter.DoesNotExist:
             userChapter = UserChapter(image=image, userTopic=userTopic, chapter=chapter)
@@ -96,7 +96,7 @@ class GetUserChaptersView(APIView):
         user = request.user
         blitzUser = BlitzUser.objects.get(user=user)
 
-        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
 
         try:
             userTopic = UserTopic.objects.get(user=blitzUser, topic=topic)
@@ -333,7 +333,7 @@ class SendBlitzView(APIView):
         blitzedUser     = BlitzUser.objects.get(pk=userPk)
 
 
-        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
+        topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
 
         if not Blitz.objects.filter(Q(user1=requestingUser, user2=blitzedUser) | Q(user1=blitzedUser, user2=requestingUser)).count() > 0:
             #blitz = Blitz(user1=requestingUser, user2=blitzedUser, topic=topic, challengeText=challengeText)

@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import BlitzUser
 from images.models import *
 from django.db.models import Q
+from django.utils import timezone
 
 class BlitzUserSerializer(serializers.ModelSerializer):
     user   = serializers.CharField(source='user.username')
@@ -58,23 +59,23 @@ class ProfileBlitzUserSerializer(serializers.ModelSerializer):
     dislikes = serializers.SerializerMethodField('getDislikes')
 
     def getLikes(self, user):
-        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
-	try:
-        	userTopic = UserTopic.objects.get(user=user, topic=topic)
-        except UserTopic.DoesNotExist:
-		return 0
-	return len(userTopic.likedBy.all())
+        topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
+        try:
+            userTopic = UserTopic.objects.get(user=user, topic=topic)
+    except UserTopic.DoesNotExist:
+        return 0
+    return len(userTopic.likedBy.all())
 
-    def getDislikes(self, user):
-        topic = Topic.objects.get(endDate__gt=datetime.datetime.now(), startDate__lte=datetime.datetime.now())
-	try:
-        	userTopic = UserTopic.objects.get(user=user, topic=topic)
-        except UserTopic.DoesNotExist:
-		return 0
-	return len(userTopic.dislikedBy.all())
+def getDislikes(self, user):
+    topic = Topic.objects.get(endDate__gt=timezone.now(), startDate__lte=timezone.now())
+    try:
+        userTopic = UserTopic.objects.get(user=user, topic=topic)
+    except UserTopic.DoesNotExist:
+        return 0
+    return len(userTopic.dislikedBy.all())
 
-    def getFollowers(self, user):
-        return len(BlitzUser.objects.filter(follows=user))
-    class Meta:
-        model = BlitzUser
-        fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'likes', 'dislikes')
+def getFollowers(self, user):
+    return len(BlitzUser.objects.filter(follows=user))
+class Meta:
+    model = BlitzUser
+    fields = ('user', 'avatar', 'blitzCount', 'is_banned', 'followers', 'likes', 'dislikes')
